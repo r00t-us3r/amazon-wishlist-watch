@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Wishlist Watch</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <h1>Wishlist Watch</h1>
+        <p id="schedule" class="muted"></p>
+      </div>
+      <button id="check-all" class="btn">Check all now</button>
+    </header>
+
+    <nav id="tabs" class="tabs" role="tablist"></nav>
+
+    <main id="panel"></main>
+
+    <template id="add-template">
+      <section class="card add-card">
+        <h2>Track a wishlist</h2>
+        <p class="muted">Paste the link to a public Amazon wishlist. Items that disappear from it will be marked as purchased.</p>
+        <form id="add-form" class="add-form">
+          <input id="add-url" type="url" required placeholder="https://www.amazon.co.uk/hz/wishlist/ls/..." autocomplete="off" />
+          <button class="btn primary" type="submit">Add wishlist</button>
+        </form>
+        <p id="add-error" class="error" hidden></p>
+      </section>
+    </template>
+
+    <script src="app.js" type="module"></script>
+  </body>
+</html>
