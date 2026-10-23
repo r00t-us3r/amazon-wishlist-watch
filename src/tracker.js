@@ -45,8 +45,14 @@ export async function addWishlist(input) {
     })),
   };
 
-  getDb().wishlists.push(wishlist);
-  await save();
+  const db = getDb();
+  db.wishlists.push(wishlist);
+  try {
+    await save();
+  } catch (err) {
+    db.wishlists = db.wishlists.filter((w) => w !== wishlist);
+    throw err;
+  }
   return wishlist;
 }
 

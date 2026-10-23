@@ -15,6 +15,15 @@ export async function load() {
     if (err.code !== "ENOENT") throw err;
     db = { wishlists: [] };
   }
+
+  try {
+    await save();
+  } catch (err) {
+    throw new Error(
+      `Cannot write to ${DATA_DIR} (${err.code || err.message}). ` +
+        `Make sure the data directory is writable by the user running the app (uid ${process.getuid?.() ?? "?"}).`
+    );
+  }
   return db;
 }
 
@@ -25,7 +34,7 @@ export function getDb() {
 
 export function save() {
   const snapshot = JSON.stringify(db, null, 2);
-  writeChain = writeChain.then(async () => {
+  writeChain = writeChain.catch(() => {}).then(async () => {
     const tmp = `${DB_FILE}.tmp`;
     await fs.writeFile(tmp, snapshot);
     await fs.rename(tmp, DB_FILE);

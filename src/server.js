@@ -99,7 +99,12 @@ app.use((err, _req, res, _next) => {
   res.status(status).json({ error: err.message || "Something went wrong" });
 });
 
-await load();
+try {
+  await load();
+} catch (err) {
+  console.error(err.message);
+  process.exit(1);
+}
 app.listen(PORT, HOST, () => {
   console.log(`Wishlist watch running at http://${HOST === "0.0.0.0" ? "localhost" : HOST}:${PORT}`);
   console.log(`Re-checking all wishlists every ${INTERVAL_MINUTES} minutes`);
