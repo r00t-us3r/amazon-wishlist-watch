@@ -1,0 +1,17 @@
+services:
+  wishlist-watch:
+    build: .
+    image: amazon-wishlist-watch
+    container_name: amazon-wishlist-watch
+    restart: unless-stopped
+    ports:
+      - "${PORT:-3000}:3000"
+    environment:
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?Set ADMIN_PASSWORD in .env}
+      SESSION_SECRET: ${SESSION_SECRET:-}
+      COOKIE_SECURE: ${COOKIE_SECURE:-false}
+      TRUST_PROXY: ${TRUST_PROXY:-}
+      CHECK_INTERVAL_MINUTES: ${CHECK_INTERVAL_MINUTES:-30}
+      TZ: ${TZ:-Europe/London}
+    volumes:
+      - ./data:/app/data

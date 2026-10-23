@@ -61,6 +61,10 @@ async function api(path, options = {}) {
     ...options,
     body: options.body ? JSON.stringify(options.body) : undefined,
   });
+  if (res.status === 401) {
+    location.href = "/login";
+    throw new Error("Not signed in");
+  }
   if (res.status === 204) return null;
   const body = await res.json().catch(() => ({}));
   if (!res.ok) throw new Error(body.error || `Request failed (${res.status})`);

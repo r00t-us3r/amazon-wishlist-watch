@@ -122,6 +122,10 @@ main {
   padding: 1.25rem 1.5rem;
 }
 
+.actions form {
+  margin: 0;
+}
+
 .btn {
   font: inherit;
   font-size: 0.9rem;

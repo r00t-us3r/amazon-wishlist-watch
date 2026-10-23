@@ -2,6 +2,7 @@ import path from "node:path";
 import express from "express";
 import { load, getDb } from "./store.js";
 import { HttpError } from "./errors.js";
+import { handleLogin, handleLogout, isAuthenticated, loginPage, requireAuth } from "./auth.js";
 import {
   addWishlist,
   checkAll,
@@ -34,6 +35,27 @@ function serialize(wl) {
 }
 
 const app = express();
+app.disable("x-powered-by");
+if (process.env.TRUST_PROXY) app.set("trust proxy", process.env.TRUST_PROXY);
+
+app.use((_req, res, next) => {
+  res.setHeader("Cache-Control", "no-store");
+  res.setHeader("X-Frame-Options", "DENY");
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("Referrer-Policy", "no-referrer");
+  next();
+});
+
+app.get("/healthz", (_req, res) => res.send("ok"));
+
+app.get("/login", (req, res) => {
+  if (isAuthenticated(req)) return res.redirect(302, "/");
+  res.send(loginPage());
+});
+app.post("/login", express.urlencoded({ extended: false, limit: "4kb" }), handleLogin);
+app.post("/logout", handleLogout);
+
+app.use(requireAuth);
 app.use(express.json());
 app.use(express.static(path.join(import.meta.dirname, "..", "public")));
 

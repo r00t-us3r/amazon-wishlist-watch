@@ -12,7 +12,12 @@
         <h1>Wishlist Watch</h1>
         <p id="schedule" class="muted"></p>
       </div>
-      <button id="check-all" class="btn">Check all now</button>
+      <div class="actions">
+        <button id="check-all" class="btn">Check all now</button>
+        <form method="post" action="/logout">
+          <button class="btn" type="submit">Sign out</button>
+        </form>
+      </div>
     </header>
 
     <nav id="tabs" class="tabs" role="tablist"></nav>
